@@ -1,22 +1,26 @@
-import Header from "./components/header"
+import FetchDemo from "./components/fetchDemo";
+import PostDemo from "./components/postDemo";
+import useCustomHook from "./hooks/useCustomHook";
+import useProductHook from "./hooks/useProductHook";
 
 function App() {
-
-  console.log("Rendering form app.jsx file")
-
+  // const { count, handleOnclickCount } = useCustomHook(20);
+  // const { title } = useProductHook();
 
   return (
-    <div>
-      <Header />
-      <div>
-        <h1>React Introduction</h1>
-        <p>Helllo, we are learning React</p>
-        <p>Some basic components</p>
+    <>
+      {/* <PostDemo /> */}
+      <FetchDemo />
+      <PostDemo />
 
-      </div>
-
-    </div>
-  )
+      {/* <div>
+        <h1>Custom hooks</h1>
+        <h3>Title: {title}</h3>
+        <h4>Count val: {count}</h4>
+        <button onClick={handleOnclickCount}>Increase</button>
+      </div> */}
+    </>
+  );
 }
 
-export default App
+export default App;
