@@ -1,40 +1,46 @@
-import React, { useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
 import useProductHook from "../hooks/useProductHook";
+import "./postDemo.css"; // Import the CSS file
+
 
 const PostDemo = () => {
     const { createPost } = useProductHook();
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors }, // Access validation errors
+    } = useForm();
 
-    const [productTitle, setProductTitle] = useState("");
-    const [productDescription, setProductDescription] = useState("");
-
-    const handleCreateProduct = (e) => {
-        e.preventDefault();
-
-        const data = {
-            title: productTitle,
-            description: productDescription,
-        };
-
+    const onSubmit = (data) => {
         createPost(data);
-
-        // Clear the input fields after creating a post
-        setProductTitle("");
-        setProductDescription("");
+        reset(); // Reset the form after creating a post
     };
 
     return (
-        <div>
+        <div className="post-data">
             <h1>Post Data</h1>
-            <form onSubmit={handleCreateProduct}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor="title">Title:</label>
                     <input
                         type="text"
                         id="title"
                         placeholder="Enter title"
-                        value={productTitle}
-                        onChange={(e) => setProductTitle(e.target.value)}
+                        {...register("title", {
+                            required: "Title is required",
+                            minLength: {
+                                value: 3,
+                                message: "Title must be at least 3 characters",
+                            },
+                            maxLength: {
+                                value: 15,
+                                message: "Title cannot exceed 15 characters",
+                            },
+                        })}
                     />
+                    {errors.title && <p style={{ color: "red" }}>{errors.title.message}</p>}
                 </div>
                 <div>
                     <label htmlFor="description">Description:</label>
@@ -42,9 +48,21 @@ const PostDemo = () => {
                         type="text"
                         id="description"
                         placeholder="Enter description"
-                        value={productDescription}
-                        onChange={(e) => setProductDescription(e.target.value)}
+                        {...register("description", {
+                            required: "Description is required",
+                            minLength: {
+                                value: 5,
+                                message: "Description must be at least 5 characters",
+                            },
+                            maxLength: {
+                                value: 50,
+                                message: "Description cannot exceed 50 characters",
+                            },
+                        })}
                     />
+                    <p className="error">
+                        {errors.description && <p style={{ color: "red" }}>{errors.description.message}</p>}
+                    </p>
                 </div>
                 <button type="submit">Create Post</button>
             </form>
