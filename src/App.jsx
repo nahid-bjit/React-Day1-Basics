@@ -1,42 +1,46 @@
 import DebounceDemo from "./components/debounceDemo";
-import { createContext, useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import FetchDemo from "./components/fetchDemo";
 import PostDemo from "./components/postDemo";
 import useCustomHook from "./hooks/useCustomHook";
 import useProductHook from "./hooks/useProductHook";
-export const ProductContext = createContext();
+//import Navbar from "./components/Navbar";
+import HomePage from "./pages/home.page";
+import UserCreatePage from "./pages/userCreate.page";
+import NotFoundPage from "./pages/notFound.page";
+import AddBooksPage from "./pages/addBooks.page";
+import Navbar from "./components/Navbar";
 
 
 function App() {
   // const { count, handleOnclickCount } = useCustomHook(20);
   // const { title } = useProductHook();
 
-  const [fetchReload, setFetchReload] = useState(false);
-
-  useEffect(() => {
-    console.log("FetchReload: ", fetchReload);
-  }, [fetchReload]);
 
 
   return (
     <>
 
-      <DebounceDemo />
 
-      <ProductContext.Provider value={{ fetchReload, setFetchReload }}>
-        <PostDemo />
-        <FetchDemo />
-      </ProductContext.Provider>
-      {/* <PostDemo /> */}
-      {/* <FetchDemo />
-      <PostDemo /> */}
 
-      {/* <div>
-        <h1>Custom hooks</h1>
-        <h3>Title: {title}</h3>
-        <h4>Count val: {count}</h4>
-        <button onClick={handleOnclickCount}>Increase</button>
-      </div> */}
+
+      {/* <DebounceDemo />
+
+      */}
+      <BrowserRouter>
+        {/* <Navbar /> */}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/user/create" element={<UserCreatePage />} />
+          <Route path="/user/edit" element={<UserCreatePage />} />
+          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/add" element={<AddBooksPage />} />
+        </Routes>
+      </BrowserRouter>
+
+
+
+
     </>
   );
 }

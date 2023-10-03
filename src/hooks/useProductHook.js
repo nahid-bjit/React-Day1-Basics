@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import axiosInstance from "../utils/axiosInstance"; // Import your Axios instance
-import { ProductContext } from "../App";
+// import { ProductContext } from "../App";
 
 const useProductHook = () => {
     const [productData, setProductData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { fetchReload, setFetchReload } = useContext(ProductContext);
+    // const { fetchReload, setFetchReload } = useContext(ProductContext);
 
     useEffect(() => {
         fetchData();
