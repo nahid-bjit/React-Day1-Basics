@@ -7,6 +7,7 @@ import useProductHook from "./hooks/useProductHook";
 //import Navbar from "./components/Navbar";
 import HomePage from "./pages/home.page";
 import UserCreatePage from "./pages/userCreate.page";
+import UserLoginPage from "./pages/userLogin.page";
 import NotFoundPage from "./pages/notFound.page";
 import AddBooksPage from "./pages/addBooks.page";
 import Navbar from "./components/Navbar";
@@ -33,6 +34,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/user/create" element={<UserCreatePage />} />
           <Route path="/user/edit" element={<UserCreatePage />} />
+          <Route path="/user/login" element={<UserLoginPage />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/add" element={<AddBooksPage />} />
         </Routes>

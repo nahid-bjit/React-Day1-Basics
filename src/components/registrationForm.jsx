@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import './RegistrationForm.css';
+import CustomPassword from "./customPassword.component";
 
 const RegistrationForm = () => {
     const {
@@ -160,12 +161,13 @@ const RegistrationForm = () => {
                             },
                         }}
                         render={({ field }) => (
-                            <input
-                                placeholder="Enter Password"
-                                type="password"
-                                {...field}
-                                style={{ border: errors.password ? "1px solid red" : "" }}
-                            />
+                            <CustomPassword fields={field} placeholder="Enter Password" />
+                            // <input
+                            //     placeholder="Enter Password"
+                            //     type="password"
+                            //     {...field}
+                            //     style={{ border: errors.password ? "1px solid red" : "" }}
+                            // />
                         )}
                     />
                     {errors.password && <h5>{errors.password.message}</h5>}
