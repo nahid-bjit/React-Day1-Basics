@@ -3,39 +3,25 @@ import { useForm, Controller } from "react-hook-form";
 import './LoginForm.css';
 import CustomPassword from "./customPassword.component";
 
-const LoginForm = () => {
+const LoginForm = ({ handleLogin, error }) => {
     const {
         handleSubmit,
         control,
         formState: { errors },
         getValues,
-        watch,
         setValue,
     } = useForm({
         mode: "onChange",
         defaultValues: {
-            username: "",
             email: "",
             password: "",
-            confirmPassword: "",
         },
     });
 
     const handlerOnSubmit = () => {
-        console.log("Form is submitted ");
-
-        const userData = {
-            userName: getValues("username"),
-            email: getValues("email"),
-            password: getValues("password"),
-        };
-
-        const firstName = getValues("firstname");
-        const lastName = getValues("lastname");
-
-        setValue("fullname", `${firstName} ${lastName}`);
-
-        console.log("The user data", userData);
+        const email = getValues("email");
+        const password = getValues("password");
+        handleLogin(email, password);
     };
 
     useEffect(() => {
@@ -53,7 +39,6 @@ const LoginForm = () => {
                         control={control}
                         rules={{
                             required: "Email is required",
-
                             pattern: {
                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                                 message: "Invalid email address",
@@ -83,17 +68,12 @@ const LoginForm = () => {
                         }}
                         render={({ field }) => (
                             <CustomPassword fields={field} placeholder="Enter Password" />
-                            // <input
-                            //     placeholder="Enter Password"
-                            //     type="password"
-                            //     {...field}
-                            //     style={{ border: errors.password ? "1px solid red" : "" }}
-                            // />
                         )}
                     />
                     {errors.password && <h5>{errors.password.message}</h5>}
                 </div>
 
+                {error && <p>{error}</p>}
 
                 <button type="submit">Submit</button>
             </form>
