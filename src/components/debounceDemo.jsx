@@ -29,7 +29,7 @@ const DebounceDemo = () => {
 
     const timeOutFunc = setTimeout(() => {
       callProductApi();
-    }, 2000);
+    }, 0);
 
     return () => clearTimeout(timeOutFunc);
   }, [searchTerm]);
