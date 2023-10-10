@@ -51,23 +51,23 @@ import UserLoginPage from "./pages/userLogin.page";
 import NotFoundPage from "./pages/notFound.page";
 import AddBooksPage from "./pages/addBooks.page";
 import Navbar from "./components/Navbar";
-import { useDispatch, useSelector } from 'react-redux';
-import { login, logout } from './store/slices/authSlice';
+//import { useDispatch, useSelector } from 'react-redux';
+// import { loginStart, logout } from './store/slices/authSlice';
 import Authenticate from "./components/Authenticate";
 
 function App() {
-  const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
+  // const user = useSelector((state) => state.auth.user);
+  // const dispatch = useDispatch();
 
-  const handleLogin = () => {
-    // Simulate a user login action by dispatching the login action with a user object.
-    dispatch(login({ username: 'exampleuser' }));
-  };
+  // const handleLogin = () => {
+  //   // Simulate a user login action by dispatching the login action with a user object.
+  //   dispatch(loginStart({ username: 'exampleuser' }));
+  // };
 
-  const handleLogout = () => {
-    // Simulate a user logout action by dispatching the logout action.
-    dispatch(logout());
-  };
+  // const handleLogout = () => {
+  //   // Simulate a user logout action by dispatching the logout action.
+  //   dispatch(logout());
+  // };
 
   return (
     <div>
@@ -76,6 +76,7 @@ function App() {
         {/* <Navbar /> */}
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/homepage" element={<HomePage />} />
           <Route path="/user/create" element={<UserCreatePage />} />
           <Route path="/user/edit" element={<UserCreatePage />} />
           <Route path="/user/login" element={<UserLoginPage />} />

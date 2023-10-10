@@ -1,17 +1,19 @@
 import React from 'react';
-import "./Navbar.css";
-import { Link } from "react-router-dom";
+import './Navbar.css';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from '../store/slices/authSlice'; // Update the import path
-// Navbar.jsx
+import { loginStart, logout } from '../store/slices/authSlice';
 
 function Navbar() {
     const user = useSelector((state) => state.auth.user);
     const dispatch = useDispatch();
+    const navigate = useNavigate(); // Initialize the useNavigate hook
 
     const handleLogin = () => {
-        // Simulate a user login action by dispatching the login action with a user object.
-        dispatch(login({ username: 'jhoglu' }));
+        // Simulate a user login action by dispatching the loginStart action.
+        dispatch(loginStart());
+        // Navigate to the login page when the "Login" button is clicked
+        navigate('/user/login');
     };
 
     const handleLogout = () => {
@@ -35,13 +37,12 @@ function Navbar() {
                     </li>
                     {user ? (
                         <li>
-                            <h1>Welcome, {user.username}!</h1>
+                            <h1>Welcome, {user.email}!</h1>
                             <button onClick={handleLogout}>Logout</button>
                         </li>
                     ) : (
                         <li>
-                            {/* <h1>Please log in</h1> */}
-                            <Link to="/user/login">Login</Link>
+                            <button onClick={handleLogin}>Login</button>
                         </li>
                     )}
                 </ul>

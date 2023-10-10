@@ -1,3 +1,5 @@
+// userLogin.page.jsx
+
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useDispatch } from 'react-redux';
@@ -5,8 +7,13 @@ import { loginUser } from '../store/slices/authSlice';
 import '../components/loginForm.css';
 import CustomPassword from "../components/customPassword.component";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom'; // Import useHistory
 
 const UserLoginPage = () => {
+  const navigate = useNavigate(); // Initialize useHistory
+
   const {
     handleSubmit,
     control,
@@ -20,7 +27,6 @@ const UserLoginPage = () => {
     },
   });
 
-  const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
   const handleLogin = async (email, password) => {
@@ -35,15 +41,19 @@ const UserLoginPage = () => {
         // Authentication successful
         // You can perform actions such as storing tokens, updating Redux store, etc.
         console.log("Login successful");
-        console.log(email, password)
+        console.log(email, password);
         dispatch(loginUser({ email, password }));
+        toast.success('Login successful', { position: toast.POSITION.TOP_RIGHT });
+
+        // Redirect to the homepage
+        navigate("/homepage"); // Use history for redirection
       } else {
         // Authentication failed, handle error
-        setError("Authentication failed. Please check your credentials.");
+        toast.error('Authentication failed. Please check your credentials.', { position: toast.POSITION.TOP_RIGHT });
       }
     } catch (error) {
       console.error("Error during login:", error);
-      setError("An error occurred during login.");
+      toast.error('An error occurred during login.', { position: toast.POSITION.TOP_RIGHT });
     }
   };
 
@@ -52,10 +62,6 @@ const UserLoginPage = () => {
     const password = getValues("password");
     handleLogin(email, password);
   };
-
-  useEffect(() => {
-    console.log("Errors: ", errors);
-  }, [errors]);
 
   return (
     <div className="form-parent">
@@ -102,10 +108,9 @@ const UserLoginPage = () => {
           {errors.password && <h5>{errors.password.message}</h5>}
         </div>
 
-        {error && <p>{error}</p>}
-
         <button type="submit">Submit</button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

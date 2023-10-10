@@ -1,16 +1,11 @@
-// authSlice.js
-
 import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios'; // You'll need Axios or another HTTP client
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import navigate for redirection
 
 const authSlice = createSlice({
     name: 'auth',
     initialState: { user: null, isLoading: false },
-    reducers:
-    {
-        login: (state, action) => {
-            state.isLoading = true;
-        },
+    reducers: {
         loginStart: (state) => {
             state.isLoading = true;
         },
@@ -27,24 +22,26 @@ const authSlice = createSlice({
     },
 });
 
-export const { login, loginStart, loginSuccess, loginFailure, logout } = authSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, logout } = authSlice.actions;
+
+const API_ENDPOINT = 'http://localhost:8000/auth/login';
 
 export const loginUser = (credentials) => async (dispatch) => {
     try {
-        // Dispatch the login start action to show loading indicator
         dispatch(loginStart());
 
-        // Make a request to your backend API to validate the credentials
-        const response = await axios.post("http://localhost:8000/auth/login", credentials);
-        // Adjust the API endpoint
+        const response = await axios.post(API_ENDPOINT, credentials);
 
-        // Assuming the response contains user data or a token upon successful login
-        const user = response.data;
+        if (response.status === 200) {
+            const user = response.data.data;
+            dispatch(loginSuccess(user));
 
-        // Dispatch the login success action with the user data
-        dispatch(loginSuccess(user));
+            // Redirect to the homepage after successful login
+            useNavigate('/homepage');
+        } else {
+            dispatch(loginFailure());
+        }
     } catch (error) {
-        // Handle login failure (e.g., show an error message)
         dispatch(loginFailure());
     }
 };
