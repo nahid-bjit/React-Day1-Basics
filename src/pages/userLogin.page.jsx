@@ -1,60 +1,17 @@
-// // UserLoginPage.jsx
-
-// import React, { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { loginUser } from '../store/slices/authSlice';
-// import "../components/loginForm.css"
-
-// function UserLoginPage() {
-//   const dispatch = useDispatch();
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-
-//     // Dispatch the loginUser action with email and password
-//     dispatch(loginUser({ email, password }));
-//   };
-
-//   return (
-//     <div>
-//       <h1>Login</h1>
-//       <form onSubmit={handleLogin}>
-//         <input
-//           type="email"
-//           placeholder="Email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//         />
-//         <input
-//           type="password"
-//           placeholder="Password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//         />
-//         <button type="submit">Login</button>
-//       </form>
-//     </div>
-//   );
-// }
-
-// export default UserLoginPage;
-
-
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../store/slices/authSlice';
 import '../components/loginForm.css';
 import CustomPassword from "../components/customPassword.component";
+import axios from "axios";
 
-const UserLoginPage = ({ handleLogin, error }) => {
+const UserLoginPage = () => {
   const {
     handleSubmit,
     control,
     formState: { errors },
     getValues,
-    setValue,
   } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -62,6 +19,33 @@ const UserLoginPage = ({ handleLogin, error }) => {
       password: "",
     },
   });
+
+  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+
+  const handleLogin = async (email, password) => {
+    try {
+      // Send a POST request to your backend for authentication
+      const response = await axios.post("http://localhost:8000/auth/login", {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        // Authentication successful
+        // You can perform actions such as storing tokens, updating Redux store, etc.
+        console.log("Login successful");
+        console.log(email, password)
+        dispatch(loginUser({ email, password }));
+      } else {
+        // Authentication failed, handle error
+        setError("Authentication failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      setError("An error occurred during login.");
+    }
+  };
 
   const handlerOnSubmit = () => {
     const email = getValues("email");
@@ -127,4 +111,3 @@ const UserLoginPage = ({ handleLogin, error }) => {
 };
 
 export default UserLoginPage;
-

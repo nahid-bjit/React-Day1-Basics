@@ -35,7 +35,8 @@ export const loginUser = (credentials) => async (dispatch) => {
         dispatch(loginStart());
 
         // Make a request to your backend API to validate the credentials
-        const response = await axios.post('/user/login', credentials); // Adjust the API endpoint
+        const response = await axios.post("http://localhost:8000/auth/login", credentials);
+        // Adjust the API endpoint
 
         // Assuming the response contains user data or a token upon successful login
         const user = response.data;
